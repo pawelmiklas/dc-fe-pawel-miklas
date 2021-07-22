@@ -1,5 +1,13 @@
 <template>
-  <Table :data="data" :columns="columns" :loading="loading">
+  <Table
+    :data="data"
+    :columns="columns"
+    :loading="loading"
+    :page="page"
+    :pages="pages"
+    withPagination
+    @paginationChange="onPaginationChange"
+  >
     <template #image="{ value }">
       <img class="character-photo" :src="value.image" />
     </template>
@@ -27,35 +35,37 @@ import Gender from "../components/Gender.vue";
 import Table from "../components/Table.vue";
 import { useCharacters } from "../composable/useCharacters";
 import { useLocalStorage } from "../composable/useLocalStorage";
-import { characterColumns } from "../utils/characterColumns";
+import { usePagination } from "../composable/usePagination";
 import { LocalStorageKeys } from "../misc/localStorageKeys";
+import { characterColumns } from "../utils/characterColumns";
 
 export default defineComponent({
   name: "Home",
   setup() {
-    const { result, loading } = useQuery(gql`
-      query getCharacters {
-        characters {
-          info {
-            count
-            pages
-            next
-            prev
-          }
-          results {
-            id
-            name
-            species
-            gender
-            episode {
-              id
-              episode
+    const { page, onPaginationChange } = usePagination();
+    const { result, loading } = useQuery(
+      gql`
+        query getCharacters($page: Int) {
+          characters(page: $page) {
+            info {
+              pages
             }
-            image
+            results {
+              id
+              name
+              species
+              gender
+              episode {
+                id
+                episode
+              }
+              image
+            }
           }
         }
-      }
-    `);
+      `,
+      { page }
+    );
 
     const {
       selectedCharacters,
@@ -66,13 +76,17 @@ export default defineComponent({
     useLocalStorage(LocalStorageKeys.characters, selectedCharacters);
 
     const data = useResult(result, [], (data) => data.characters.results);
+    const pages = useResult(result, [], (data) => data.characters.info.pages);
 
     return {
       columns: characterColumns,
+      page,
       data,
+      pages,
       loading,
       isCharacterActive,
       toggleFavoriteCharacter,
+      onPaginationChange,
     };
   },
   components: { Table, Gender, ActionButton },

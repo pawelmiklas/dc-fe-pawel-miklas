@@ -31,11 +31,25 @@
         No data
       </div>
     </table>
+    <div v-if="withPagination" class="content-wrapper">
+      <div class="pagination">
+        <Pagination
+          hideFirstButton
+          hideLastButton
+          v-model="pagePagination"
+          :pages="pages"
+          :range-size="1"
+          @update:modelValue="paginationHandler"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { defineComponent, PropType, ref } from "vue";
+import Pagination from "@hennge/vue3-pagination";
+import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 
 export default defineComponent({
   name: "Table",
@@ -56,11 +70,64 @@ export default defineComponent({
     },
     loading: Boolean,
     withPagination: Boolean,
+    page: Number,
+    pages: Number,
   },
+  setup(props, context) {
+    const pagePagination = ref(props.page);
+
+    const paginationHandler = (page: number) => {
+      context.emit("paginationChange", page);
+    };
+
+    return { pagePagination, paginationHandler };
+  },
+  components: { Pagination },
 });
 </script>
 
 <style lang="scss">
+.content-wrapper {
+  @include wrapperGutterLeft;
+  @include wrapperGutterRight;
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  .pagination {
+    padding: 40px 0;
+
+    ul > li {
+      width: 40px;
+      height: 40px;
+      border-radius: 5px;
+      border: 1px solid $gray;
+      color: $gray;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 4px;
+
+      .Control-active {
+        fill: $main;
+      }
+
+      .Page {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+
+        &-active {
+          background-color: $main !important;
+          border: 1px solid $main;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
 .info {
   width: 100%;
   text-align: center;

@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.3.21",
+    "@hennge/vue3-pagination": "^1.0.17",
     "@vue/apollo-composable": "^4.0.0-alpha.14",
     "core-js": "^3.6.5",
     "graphql": "^15.5.1",
