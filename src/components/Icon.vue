@@ -144,7 +144,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 
-type Icons =
+export type Icons =
   | "close"
   | "female"
   | "logo"

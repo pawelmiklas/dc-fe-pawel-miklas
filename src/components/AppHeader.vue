@@ -18,7 +18,7 @@
                 </li>
               </ul>
             </div>
-            <div class="search">
+            <div class="search-input">
               <input type="text" class="input" />
               <Icon name="search" class="fas" />
             </div>
@@ -27,23 +27,139 @@
       </div>
     </div>
   </nav>
+  <br />
+  <Table :data="data" :columns="columns">
+    <template #image="{ value }">
+      <img class="character-photo" :src="value.image" />
+    </template>
+    <template #gender="{ value }">
+      <Gender :gender="value.gender" />
+    </template>
+  </Table>
 </template>
 
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
-import ClickOutside from "vue-click-outside";
 import Icon from "../components/Icon.vue";
+import Table from "../components/Table.vue";
+import Gender from "../components/Gender.vue";
+
 type Filter = "Name" | "Identifier" | "Episode";
+
+type Character = {
+  id: string;
+  name: string;
+  species: string;
+  gender: string;
+  image: string;
+};
+
+const DATA = [
+  {
+    id: "1",
+    name: "Rick Sanchez",
+    species: "Human",
+    gender: "Male",
+    image: "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+  },
+  {
+    id: "2",
+    name: "Morty Smith",
+    species: "Human",
+    gender: "Male",
+    image: "https://rickandmortyapi.com/api/character/avatar/2.jpeg",
+  },
+  {
+    id: "3",
+    name: "Summer Smith",
+    species: "Human",
+    gender: "Female",
+    image: "https://rickandmortyapi.com/api/character/avatar/3.jpeg",
+  },
+  {
+    id: "4",
+    name: "Beth Smith",
+    species: "Human",
+    gender: "Female",
+    image: "https://rickandmortyapi.com/api/character/avatar/4.jpeg",
+  },
+  {
+    id: "5",
+    name: "Jerry Smith",
+    species: "Human",
+    gender: "Male",
+    image: "https://rickandmortyapi.com/api/character/avatar/5.jpeg",
+  },
+  {
+    id: "6",
+    name: "Abadango Cluster Princess",
+    species: "Alien",
+    gender: "Female",
+    image: "https://rickandmortyapi.com/api/character/avatar/6.jpeg",
+  },
+  {
+    id: "7",
+    name: "Abradolf Lincler",
+    species: "Human",
+    gender: "Male",
+    image: "https://rickandmortyapi.com/api/character/avatar/7.jpeg",
+  },
+  {
+    id: "8",
+    name: "Adjudicator Rick",
+    species: "Human",
+    gender: "Male",
+    image: "https://rickandmortyapi.com/api/character/avatar/8.jpeg",
+  },
+];
 
 export default defineComponent({
   name: "AppNavigation",
   setup() {
     const selectedFilter = ref<Filter>("Name");
+    const page = ref(1);
     const filterOptions = ref<Filter[]>(["Name", "Identifier", "Episode"]);
     const isDropdownActive = ref(false);
     const navLink = computed<{ title: string }[]>(() => [
       { title: "All characters" },
       { title: "Favorites" },
+    ]);
+
+    const columns = computed(() => [
+      {
+        title: "Photo",
+        dataIndex: "image",
+        customRender: "image",
+        // render: (character: Character) =>
+        //   `<img class="character-photo" src=${character.image} />`,
+      },
+      {
+        title: "Character ID",
+        dataIndex: "id",
+      },
+      {
+        title: "Name",
+        dataIndex: "name",
+      },
+      {
+        title: "Gender",
+        dataIndex: "gender",
+        customRender: "gender",
+        // render: (character: Character) =>
+        //   `<Gender gender=${character.gender} />`,
+      },
+      {
+        title: "Species",
+        dataIndex: "species",
+      },
+      // {
+      //   title: "Last Episode",
+      //   dataIndex: "species",
+      // },
+      // {
+      //   title: "Add to Favorites",
+      //   render: () => `<div>Dodaj</div>`,
+      // },
     ]);
 
     const handleSelect = (filter: Filter) => {
@@ -54,6 +170,10 @@ export default defineComponent({
       isDropdownActive.value = !isDropdownActive.value;
     };
 
+    const paginate = () => {
+      console.log("paginate");
+    };
+
     return {
       navLink,
       selectedFilter,
@@ -61,10 +181,13 @@ export default defineComponent({
       filterOptions,
       isDropdownActive,
       handleDropdownActive,
+      page,
+      paginate,
+      columns,
+      data: DATA,
     };
   },
-  directives: { ClickOutside },
-  components: { Icon },
+  components: { Icon, Table, Gender },
 });
 </script>
 
@@ -158,7 +281,7 @@ export default defineComponent({
         border-color: $gray transparent transparent transparent;
       }
     }
-    .search {
+    .search-input {
       width: 100%;
       height: 100%;
       position: relative;
@@ -189,5 +312,9 @@ export default defineComponent({
   display: flex;
   align-items: center;
   width: 100%;
+}
+
+.character-photo {
+  width: 43px;
 }
 </style>
