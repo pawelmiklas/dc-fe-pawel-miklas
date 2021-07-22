@@ -1,9 +1,16 @@
 <template>
   <div class="tabsWrapper">
     <div v-for="item in items" :key="item.title" class="tab">
-      <span class="tab-text" :class="{ 'tab-text-active': item.isActive }">
-        {{ item.title }}
-      </span>
+      <router-link :to="item.path" custom v-slot="{ href, navigate, isActive }">
+        <NavLink
+          class="tab-text"
+          :class="{ 'tab-text-active': isActive }"
+          :href="href"
+          @click="navigate"
+        >
+          {{ item.title }}
+        </NavLink>
+      </router-link>
     </div>
   </div>
 </template>
@@ -15,7 +22,7 @@ export default defineComponent({
   name: "Tabs",
   props: {
     items: {
-      type: Array as PropType<{ title: string; isActive?: boolean }[]>,
+      type: Array as PropType<{ title: string; path: string }[]>,
       required: true,
     },
   },
@@ -41,6 +48,7 @@ export default defineComponent({
 
   &-text {
     border-bottom: 3px solid transparent;
+    text-decoration: none;
 
     &-active {
       color: $main;
