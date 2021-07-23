@@ -1,4 +1,5 @@
 <template>
+  <AppHeader @onSearch="handleSearch" />
   <Table
     :data="data"
     :columns="columns"
@@ -31,9 +32,11 @@ import { useQuery, useResult } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { defineComponent } from "vue";
 import ActionButton from "../components/ActionButton.vue";
+import AppHeader from "../components/AppHeader.vue";
 import Gender from "../components/Gender.vue";
 import Table from "../components/Table.vue";
 import { useCharacters } from "../composable/useCharacters";
+import { useFilter } from "../composable/useFilter";
 import { useLocalStorage } from "../composable/useLocalStorage";
 import { usePagination } from "../composable/usePagination";
 import { LocalStorageKeys } from "../misc/localStorageKeys";
@@ -42,11 +45,12 @@ import { characterColumns } from "../utils/characterColumns";
 export default defineComponent({
   name: "Home",
   setup() {
+    const { filter, handleSearch } = useFilter();
     const { page, onPaginationChange } = usePagination();
     const { result, loading } = useQuery(
       gql`
-        query getCharacters($page: Int) {
-          characters(page: $page) {
+        query getCharacters($page: Int, $filter: FilterCharacter) {
+          characters(page: $page, filter: $filter) {
             info {
               pages
             }
@@ -64,7 +68,8 @@ export default defineComponent({
           }
         }
       `,
-      { page }
+      { page, filter },
+      { fetchPolicy: "cache-and-network" }
     );
 
     const {
@@ -87,8 +92,9 @@ export default defineComponent({
       isCharacterActive,
       toggleFavoriteCharacter,
       onPaginationChange,
+      handleSearch,
     };
   },
-  components: { Table, Gender, ActionButton },
+  components: { Table, Gender, ActionButton, AppHeader },
 });
 </script>

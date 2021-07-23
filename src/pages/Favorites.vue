@@ -1,4 +1,5 @@
 <template>
+  <AppHeader />
   <Table :data="data" :columns="columns">
     <template #image="{ value }">
       <img class="character-photo" :src="value.image" />
@@ -27,6 +28,7 @@ import { characterColumns } from "../utils/characterColumns";
 import { useCharacters } from "../composable/useCharacters";
 import { useLocalStorage } from "../composable/useLocalStorage";
 import { LocalStorageKeys } from "../misc/localStorageKeys";
+import AppHeader from "../components/AppHeader.vue";
 
 export default defineComponent({
   name: "Favorites",
@@ -46,6 +48,6 @@ export default defineComponent({
       toggleFavoriteCharacter,
     };
   },
-  components: { Table, Gender, ActionButton },
+  components: { Table, Gender, ActionButton, AppHeader },
 });
 </script>
