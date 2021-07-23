@@ -7,20 +7,25 @@
           <div class="search-wrapper">
             <div class="info">Search by</div>
             <div class="select" @click="handleDropdownActive">
-              <div>{{ selectedFilter }}</div>
+              <div>{{ selectedFilter.title }}</div>
               <ul :class="{ active: isDropdownActive }">
                 <li
                   v-for="filter in filterOptions"
-                  :key="filter"
+                  :key="filter.value"
                   @click="handleSelect(filter)"
                 >
-                  {{ filter }}
+                  {{ filter.title }}
                 </li>
               </ul>
             </div>
             <div class="search-input">
-              <input type="text" class="input" />
-              <Icon name="search" class="fas" />
+              <input
+                type="text"
+                class="input"
+                :value="search"
+                @input="onSearch"
+              />
+              <Icon name="search" />
             </div>
           </div>
         </div>
@@ -33,30 +38,56 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import Icon from "../components/Icon.vue";
 import Tabs from "../components/Tabs.vue";
+import { debounce } from "../utils/debounce";
 
-type Filter = "Name" | "Identifier" | "Episode";
+enum Filter {
+  name = "name",
+  gender = "gender",
+  species = "species",
+}
+
+type FilterOption = { value: Filter; title: string };
 
 export default defineComponent({
   name: "AppNavigation",
-  setup() {
-    const selectedFilter = ref<Filter>("Name");
-    const filterOptions = ref<Filter[]>(["Name", "Identifier", "Episode"]);
+  emits: ["onSearch"],
+  setup(_, context) {
+    const search = ref("");
+    const selectedFilter = ref<FilterOption>({
+      value: Filter.name,
+      title: "Name",
+    });
     const isDropdownActive = ref(false);
-    const navLink = computed<{ title: string }[]>(() => [
+    const filterOptions = [
+      { value: Filter.name, title: "Name" },
+      { value: Filter.gender, title: "Gender" },
+      { value: Filter.species, title: "Species" },
+    ];
+    const navLink = [
       { title: "All characters", path: "/" },
       { title: "Favorites", path: "/favorites" },
-    ]);
+    ];
 
-    const handleSelect = (filter: Filter) => {
+    const handleSelect = (filter: FilterOption) => {
       selectedFilter.value = filter;
     };
 
     const handleDropdownActive = () => {
       isDropdownActive.value = !isDropdownActive.value;
     };
+
+    const onSearch = debounce((e: Event) => {
+      const target = e.target as HTMLInputElement;
+
+      search.value = target.value;
+      context.emit("onSearch", {
+        filterBy: selectedFilter.value.value,
+        filterValue: target.value,
+      });
+    }, 1000);
 
     return {
       navLink,
@@ -65,6 +96,8 @@ export default defineComponent({
       filterOptions,
       isDropdownActive,
       handleDropdownActive,
+      search,
+      onSearch,
     };
   },
   components: { Icon, Tabs },
@@ -73,7 +106,8 @@ export default defineComponent({
 
 <style lang="scss">
 .navbar {
-  height: 135px;
+  min-height: 135px;
+  height: 100%;
   width: 100%;
   background-color: $white;
 
@@ -83,11 +117,16 @@ export default defineComponent({
     align-items: center;
     border-bottom: 1px solid $gray-light;
     height: 100%;
+    padding: 32px 0;
   }
 }
 
 .search {
   padding-left: 80px;
+
+  @media (max-width: $lg) {
+    padding: 24px 0 0 0;
+  }
 
   &-wrapper {
     width: 505px;
@@ -172,6 +211,7 @@ export default defineComponent({
         border: 0;
         padding: 0 56px 0 16px;
         border-radius: 10px;
+        color: $gray;
       }
 
       svg {
@@ -181,7 +221,6 @@ export default defineComponent({
         right: 15px;
         font-size: 22px;
         color: $main;
-        cursor: pointer;
       }
     }
   }
@@ -193,6 +232,10 @@ export default defineComponent({
   display: flex;
   align-items: center;
   width: 100%;
+
+  @media (max-width: $lg) {
+    flex-direction: column;
+  }
 }
 
 .character-photo {
