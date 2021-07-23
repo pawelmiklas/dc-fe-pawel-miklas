@@ -1,6 +1,6 @@
-import { onBeforeMount, watch } from "vue";
+import { onBeforeMount, watch, Ref } from "vue";
 
-const useLocalStorage = (key: string, ref: any) => {
+const useLocalStorage = <T>(key: string, ref: Ref<T>) => {
   onBeforeMount(() => {
     const value = window.localStorage.getItem(key);
 
@@ -13,12 +13,7 @@ const useLocalStorage = (key: string, ref: any) => {
     window.localStorage.setItem(key, JSON.stringify(ref.value));
   });
 
-  const clearStorage = (refValue: any) => {
-    ref.value = refValue;
-    window.localStorage.setItem(key, refValue);
-  };
-
-  return { clearStorage };
+  return {};
 };
 
 export { useLocalStorage };
