@@ -14,6 +14,8 @@ $xl: 1200px;
 
 // mixins
 @mixin wrapperGutterLeft() {
+  padding-left: 16px;
+
   @media (min-width: $sm) {
     padding-left: 16px;
   }
@@ -29,6 +31,8 @@ $xl: 1200px;
 }
 
 @mixin wrapperGutterRight() {
+  padding-right: 16px;
+
   @media (min-width: $sm) {
     padding-right: 16px;
   }

@@ -36,6 +36,11 @@ export default defineComponent({
   height: 78px;
   font-weight: 500;
   color: $gray;
+
+  @media (max-width: $lg) {
+    width: 100%;
+    justify-content: space-evenly;
+  }
 }
 
 .tab {
@@ -45,6 +50,10 @@ export default defineComponent({
   align-items: center;
   margin-right: 80px;
   cursor: pointer;
+
+  @media (max-width: $lg) {
+    margin: 0;
+  }
 
   &-text {
     border-bottom: 3px solid transparent;

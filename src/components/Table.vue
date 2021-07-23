@@ -200,7 +200,7 @@ export default defineComponent({
     }
 
     td {
-      padding-left: 50%;
+      padding-left: 45%;
       text-align: left;
       position: relative;
 
@@ -208,7 +208,7 @@ export default defineComponent({
         content: attr(data-label);
         position: absolute;
         left: 0;
-        width: 50%;
+        width: 55%;
         padding-left: 15px;
         font-size: 15px;
         font-weight: bold;

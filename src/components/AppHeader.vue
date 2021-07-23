@@ -129,6 +129,9 @@ export default defineComponent({
   padding-left: 80px;
 
   @media (max-width: $lg) {
+    width: 100%;
+    display: flex;
+    justify-content: center;
     padding: 24px 0 0 0;
   }
 
@@ -143,14 +146,16 @@ export default defineComponent({
     font-size: 16px;
 
     .info {
-      min-width: 125px;
+      max-width: 125px;
       display: flex;
       justify-content: center;
       align-items: center;
+      width: 100%;
     }
 
     .select {
-      min-width: 130px;
+      max-width: 130px;
+      width: 100%;
       border-right: 1px solid $gray;
       border-left: 1px solid $gray;
       position: relative;
@@ -189,6 +194,7 @@ export default defineComponent({
       }
 
       ul.active {
+        z-index: 1;
         display: block;
         border: 1px solid $gray;
         border-bottom-left-radius: 10px;
