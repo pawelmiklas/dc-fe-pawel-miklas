@@ -1,30 +1,33 @@
 <template>
   <AppHeader @onSearch="handleSearch" />
-  <Table
-    :data="data"
-    :columns="columns"
-    :loading="loading"
-    :page="page"
-    :pages="pages"
-    withPagination
-    @paginationChange="onPaginationChange"
-  >
-    <template #image="{ value }">
-      <img class="character-photo" :src="value.image" />
-    </template>
-    <template #gender="{ value }">
-      <Gender :gender="value.gender" />
-    </template>
-    <template #episode="{ value }">
-      {{ value.episode[value.episode.length - 1].episode }}
-    </template>
-    <template #action="{ value }">
-      <ActionButton
-        @click="toggleFavoriteCharacter(value)"
-        :isActive="isCharacterActive(value)"
-      />
-    </template>
-  </Table>
+  <div class="info" v-if="error">oops something went wrong</div>
+  <template v-else>
+    <Table
+      :data="data"
+      :columns="columns"
+      :loading="loading"
+      :page="page"
+      :pages="pages"
+      withPagination
+      @paginationChange="onPaginationChange"
+    >
+      <template #image="{ value }">
+        <img class="character-photo" :src="value.image" />
+      </template>
+      <template #gender="{ value }">
+        <Gender :gender="value.gender" />
+      </template>
+      <template #episode="{ value }">
+        {{ value.episode[value.episode.length - 1].episode }}
+      </template>
+      <template #action="{ value }">
+        <ActionButton
+          @click="toggleFavoriteCharacter(value)"
+          :isActive="isCharacterActive(value)"
+        />
+      </template>
+    </Table>
+  </template>
 </template>
 
 <script lang="ts">
@@ -47,7 +50,7 @@ export default defineComponent({
   setup() {
     const { filter, handleSearch } = useFilter();
     const { page, onPaginationChange } = usePagination();
-    const { result, loading } = useQuery(
+    const { result, loading, error } = useQuery(
       gql`
         query getCharacters($page: Int, $filter: FilterCharacter) {
           characters(page: $page, filter: $filter) {
@@ -93,6 +96,7 @@ export default defineComponent({
       toggleFavoriteCharacter,
       onPaginationChange,
       handleSearch,
+      error,
     };
   },
   components: { Table, Gender, ActionButton, AppHeader },
