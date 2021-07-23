@@ -12,8 +12,8 @@ const useCharacters = () => {
       ({ id }) => id === character.id
     );
 
-    if (selectedCharacters.value.length >= 5 && !isCharacterActive) {
-      return window.confirm("You can add up to 5 characters to favorites");
+    if (selectedCharacters.value.length >= 7 && !isCharacterActive) {
+      return window.confirm("You can add up to 7 characters to favorites");
     }
 
     const newCharacters = isCharacterActive
