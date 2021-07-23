@@ -241,9 +241,4 @@ export default defineComponent({
     flex-direction: column;
   }
 }
-
-.character-photo {
-  width: 43px;
-  display: flex;
-}
 </style>

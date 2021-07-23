@@ -1,5 +1,5 @@
 <template>
-  <div class="tabsWrapper">
+  <div class="tabs-wrapper">
     <div v-for="item in items" :key="item.title" class="tab">
       <router-link :to="item.path" custom v-slot="{ href, navigate, isActive }">
         <NavLink
@@ -30,7 +30,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.tabsWrapper {
+.tabs-wrapper {
   display: flex;
   align-items: center;
   height: 78px;

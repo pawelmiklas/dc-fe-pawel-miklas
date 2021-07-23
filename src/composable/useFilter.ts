@@ -4,7 +4,7 @@ const useFilter = () => {
   const filterBy = ref("");
   const filterValue = ref("");
 
-  const handleSearch = (props: any) => {
+  const handleSearch = (props: { filterBy: string; filterValue: string }) => {
     filterBy.value = props.filterBy;
     filterValue.value = props.filterValue;
   };

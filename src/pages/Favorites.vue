@@ -36,7 +36,6 @@ export default defineComponent({
   name: "Favorites",
   setup() {
     const { filter, handleSearch } = useFilter();
-
     const {
       selectedCharacters,
       isCharacterActive,
