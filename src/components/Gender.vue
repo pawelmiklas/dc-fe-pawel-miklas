@@ -8,12 +8,13 @@
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
 import Icon, { Icons } from "./Icon.vue";
-type Gender = "Male" | "Female" | "unknown";
+type Gender = "Male" | "Female" | "unknown" | "Genderless";
 
 const genderIcons: Record<Gender, Icons> = {
   Male: "male",
   Female: "female",
   unknown: "remove",
+  Genderless: "close",
 };
 
 export default defineComponent({
