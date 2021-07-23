@@ -38,7 +38,7 @@
           hideLastButton
           v-model="pagePagination"
           :pages="pages"
-          :range-size="1"
+          :range-size="0"
           @update:modelValue="paginationHandler"
         />
       </div>
@@ -106,11 +106,7 @@ export default defineComponent({
       display: flex;
       justify-content: center;
       align-items: center;
-      margin: 0 4px;
-
-      &:first-child {
-        margin: 0 4px 0 0;
-      }
+      margin: 4px;
 
       .Control-active {
         fill: $main;
