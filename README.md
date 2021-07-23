@@ -1,1 +1,1 @@
-[Live](https://gifted-bhaskara-0dbff8.netlify.app/).
+[Live](https://gifted-bhaskara-0dbff8.netlify.app/)
