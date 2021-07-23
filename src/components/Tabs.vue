@@ -2,14 +2,14 @@
   <div class="tabs-wrapper">
     <div v-for="item in items" :key="item.title" class="tab">
       <router-link :to="item.path" custom v-slot="{ href, navigate, isActive }">
-        <NavLink
+        <span
           class="tab-text"
           :class="{ 'tab-text-active': isActive }"
           :href="href"
           @click="navigate"
         >
           {{ item.title }}
-        </NavLink>
+        </span>
       </router-link>
     </div>
   </div>

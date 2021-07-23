@@ -81,7 +81,7 @@ export default defineComponent({
     useLocalStorage(LocalStorageKeys.characters, selectedCharacters);
 
     const data = useResult(result, [], (data) => data.characters.results);
-    const pages = useResult(result, [], (data) => data.characters.info.pages);
+    const pages = useResult(result, 1, (data) => data.characters.info.pages);
 
     return {
       columns: characterColumns,
