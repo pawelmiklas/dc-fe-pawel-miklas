@@ -43,7 +43,7 @@ import Icon from "../components/Icon.vue";
 import Tabs from "../components/Tabs.vue";
 import { debounce } from "../utils/debounce";
 
-enum Filter {
+export enum Filter {
   name = "name",
   gender = "gender",
   species = "species",
@@ -73,6 +73,10 @@ export default defineComponent({
 
     const handleSelect = (filter: FilterOption) => {
       selectedFilter.value = filter;
+      context.emit("onSearch", {
+        filterBy: filter.value,
+        filterValue: search.value,
+      });
     };
 
     const handleDropdownActive = () => {
@@ -240,5 +244,6 @@ export default defineComponent({
 
 .character-photo {
   width: 43px;
+  display: flex;
 }
 </style>
