@@ -31,7 +31,7 @@
         No data
       </div>
     </table>
-    <div v-if="withPagination" class="content-wrapper">
+    <div v-if="withPagination && data.length > 0" class="content-wrapper">
       <div class="pagination">
         <Pagination
           hideFirstButton
@@ -108,6 +108,10 @@ export default defineComponent({
       align-items: center;
       margin: 0 4px;
 
+      &:first-child {
+        margin: 0 4px 0 0;
+      }
+
       .Control-active {
         fill: $main;
       }
@@ -117,6 +121,7 @@ export default defineComponent({
         height: 100%;
         padding: 0;
         margin: 0;
+        color: $gray;
 
         &-active {
           background-color: $main !important;
